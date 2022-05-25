@@ -111,3 +111,47 @@ func QueenN(n int) {
 
 	fn(n, 0, backtrack)
 }
+
+// Climb function   爬楼梯，一共有N层楼梯，有几种步数，求全部方案
+func Climb(floor int, ways []int, path []int) {
+	results := make([][]int, 0)
+
+	var fn func(int, []int, []int)
+	fn = func(floor int, ways []int, path []int) {
+		if floor == 0 {
+			results = append(results, path)
+
+			return
+		}
+
+		for _, i := range ways {
+			if floor-i < 0 {
+				continue
+			}
+
+			newPath := make([]int, len(path))
+			copy(newPath, path)
+			newPath = append(newPath, i)
+
+			fn(floor-i, ways, newPath)
+		}
+	}
+
+	fn(floor, ways, []int{})
+
+	fmt.Println(len(results))
+	for _, item := range results {
+		fmt.Println(item)
+	}
+}
+
+// ClimbNums function    Climb Nums.
+func ClimbNums(floor int) int {
+	if floor == 0 {
+		return 1
+	} else if floor < 0 {
+		return 0
+	}
+
+	return ClimbNums(floor-1) + ClimbNums(floor-2) + ClimbNums(floor-3)
+}

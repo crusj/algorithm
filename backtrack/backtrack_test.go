@@ -72,3 +72,55 @@ func TestQueenN(t *testing.T) {
 		})
 	}
 }
+
+func TestClimb(t *testing.T) {
+	type args struct {
+		floor int
+		ways  []int
+		path  []int
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "test1",
+			args: args{
+				floor: 10,
+				ways:  []int{1, 2, 3},
+				path:  []int{},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			Climb(tt.args.floor, tt.args.ways, tt.args.path)
+		})
+	}
+}
+
+func TestClimbNums(t *testing.T) {
+	type args struct {
+		floor int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "test1",
+			args: args{
+				floor: 10,
+			},
+			want: 274,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ClimbNums(tt.args.floor); got != tt.want {
+				t.Errorf("ClimbNums() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
