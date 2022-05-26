@@ -319,17 +319,13 @@ func combinationSum2(candidates []int, target int) [][]int {
 		if target%candidates[0] == 0 {
 			q := target / candidates[0]
 			tmp := times[candidates[0]] - q
-			if tmp > 0 {
+			if tmp >= 0 {
 				s := make([]int, 0, q)
 				for b := 0; b < q; b++ {
 					s = append(s, candidates[0])
 				}
 
-				for i := 0; i <= tmp; i++ {
-					n := make([]int, len(s))
-					copy(n, s)
-					results = append(results, n)
-				}
+				results = append(results, s)
 				return results
 
 			} else {
@@ -402,4 +398,89 @@ func combinationSum2(candidates []int, target int) [][]int {
 	fn(target, make(map[int]int))
 
 	return results
+}
+
+// exist function    leetcode79
+func exist(board [][]byte, word string) bool {
+	result := false
+	wordBytes := []byte(word)
+
+	isExists := func(row, col int, path []int) bool {
+		for i := 0; i < len(path); i = i + 2 {
+			if row == path[i] && col == path[i+1] {
+				return true
+			}
+		}
+
+		return false
+	}
+
+	var fn func(int, int, []int)
+	fn = func(row, col int, path []int) {
+		if len(path)/2 == len(wordBytes) {
+			result = true
+			return
+		}
+
+		// selects
+		// top
+		if row-1 >= 0 {
+			if !isExists(row-1, col, path) { // must not repeat
+				if board[row-1][col] == wordBytes[len(path)/2] { // valid
+					newPath := make([]int, len(path), len(path)+2)
+					copy(newPath, path)
+					newPath = append(newPath, []int{row - 1, col}...)
+					fn(row-1, col, newPath)
+				}
+			}
+		}
+
+		// bottom
+		if row+1 < len(board) {
+			if !isExists(row+1, col, path) { // must not repeat
+				if board[row+1][col] == wordBytes[len(path)/2] { // valid
+					newPath := make([]int, len(path), len(path)+2)
+					copy(newPath, path)
+					newPath = append(newPath, []int{row + 1, col}...)
+					fn(row+1, col, newPath)
+				}
+			}
+		}
+
+		// left
+		if col-1 >= 0 {
+			if !isExists(row, col-1, path) { // must not repeat
+				if board[row][col-1] == wordBytes[len(path)/2] { // valid
+					newPath := make([]int, len(path), len(path)+2)
+					copy(newPath, path)
+					newPath = append(newPath, []int{row, col - 1}...)
+					fn(row, col-1, newPath)
+				}
+			}
+		}
+
+		// right
+		if col+1 < len(board[0]) {
+			if !isExists(row, col+1, path) { // must not repeat
+				if board[row][col+1] == wordBytes[len(path)/2] { // valid
+					newPath := make([]int, len(path), len(path)+2)
+					copy(newPath, path)
+					newPath = append(newPath, []int{row, col + 1}...)
+					fn(row, col+1, newPath)
+				}
+			}
+		}
+	}
+
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			if board[i][j] != wordBytes[0] {
+				continue
+			}
+
+			fn(i, j, []int{i, j})
+		}
+	}
+
+	return result
 }
