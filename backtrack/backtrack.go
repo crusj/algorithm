@@ -2,6 +2,7 @@ package backtrack
 
 import (
 	"fmt"
+	"sort"
 )
 
 // WholeArrangement 对一组数字进行全排列
@@ -154,4 +155,251 @@ func ClimbNums(floor int) int {
 	}
 
 	return ClimbNums(floor-1) + ClimbNums(floor-2) + ClimbNums(floor-3)
+}
+
+func letterCombinations(digits string) []string {
+	if len(digits) == 0 {
+		return []string{}
+	}
+
+	digitsBytes := []byte(digits)
+	m := map[byte][]byte{
+		'1': {},
+		'2': {'a', 'b', 'c'},
+		'3': {'d', 'e', 'f'},
+		'4': {'g', 'h', 'i'},
+		'5': {'j', 'k', 'l'},
+		'6': {'m', 'n', 'o'},
+		'7': {'p', 'q', 'r', 's'},
+		'8': {'t', 'u', 'v'},
+		'9': {'w', 'x', 'y', 'z'},
+	}
+
+	results := []string{}
+
+	var fn func(row int, combine []byte)
+
+	fn = func(offset int, combine []byte) {
+		if len(combine) == len(digits) {
+			results = append(results, string(combine))
+
+			return
+		}
+
+		for _, c := range m[digitsBytes[byte(offset)]] {
+			newCombie := make([]byte, len(combine))
+			copy(newCombie, combine)
+			newCombie = append(newCombie, c)
+			fn(offset+1, newCombie)
+		}
+	}
+
+	fn(0, []byte{})
+
+	return results
+}
+
+// generateParenthesis function    leetcode 22
+func generateParenthesis(n int) []string {
+	results := []string{}
+
+	checkValids := func(str []byte) bool {
+		stack := make([]byte, 0, len(str))
+		for _, v := range str {
+			if v == '(' {
+				stack = append(stack, v)
+			} else {
+				if len(stack) == 0 {
+					return false
+				}
+
+				if stack[len(stack)-1] != '(' {
+					return false
+				}
+
+				stack = stack[0 : len(stack)-1]
+			}
+		}
+
+		return len(stack) == 0
+	}
+
+	var fn func(int, []byte)
+	fn = func(i int, s []byte) {
+		if len(s) == n*2 {
+			if checkValids(s) {
+				results = append(results, string(s))
+			}
+
+			return
+		}
+
+		newS := make([]byte, len(s))
+		copy(newS, s)
+		newS = append(newS, '(')
+		fn(n-1, newS)
+
+		newS = make([]byte, len(s))
+		copy(newS, s)
+		newS = append(newS, ')')
+		fn(n-1, newS)
+	}
+
+	fn(n*2, []byte{})
+
+	return results
+}
+
+// combinationSum function    leetcode39
+func combinationSum(candidates []int, target int) [][]int {
+	results := make([][]int, 0)
+	exists := make(map[string]struct{})
+	sort.Ints(candidates)
+	var fn func(int, []int)
+	fn = func(t int, path []int) {
+		if t == 0 {
+			sort.Ints(path)
+
+			k := make([]byte, len(path))
+
+			for i, c := range path {
+				k[i] = byte(c)
+			}
+
+			if _, is := exists[string(k)]; is {
+				return
+			} else {
+				results = append(results, path)
+				exists[string(k)] = struct{}{}
+			}
+
+			return
+		}
+
+		for _, i := range candidates {
+			if t-i < 0 {
+				break
+			}
+
+			newPath := make([]int, len(path), len(path)+1)
+			copy(newPath, path)
+			newPath = append(newPath, i)
+
+			fn(t-i, newPath)
+		}
+	}
+
+	fn(target, []int{})
+
+	return results
+}
+
+// combinationSum2 function    leetcode40
+func combinationSum2(candidates []int, target int) [][]int {
+	results := make([][]int, 0)
+	sort.Ints(candidates)
+
+	preSum := make([]int, len(candidates)+1) // 前缀和
+	preSum[0] = 0
+	for i := 0; i < len(candidates); i++ {
+		preSum[i+1] = preSum[i] + candidates[i]
+	}
+
+	exists := make(map[string]struct{})
+	times := make(map[int]int)
+	for _, v := range candidates {
+		if _, is := times[v]; is {
+			times[v]++
+		} else {
+			times[v] = 1
+		}
+	}
+
+	if len(times) == 1 {
+		if target%candidates[0] == 0 {
+			q := target / candidates[0]
+			tmp := times[candidates[0]] - q
+			if tmp > 0 {
+				s := make([]int, 0, q)
+				for b := 0; b < q; b++ {
+					s = append(s, candidates[0])
+				}
+
+				for i := 0; i <= tmp; i++ {
+					n := make([]int, len(s))
+					copy(n, s)
+					results = append(results, n)
+				}
+				return results
+
+			} else {
+				return results
+			}
+		} else {
+			return results
+		}
+	}
+
+	var fn func(int, map[int]int)
+	fn = func(t int, path map[int]int) {
+		if t == 0 {
+			tmp := make([]int, 0, len(path))
+			for k, v := range path {
+				for i := 1; i <= v; i++ {
+					tmp = append(tmp, k)
+				}
+			}
+
+			sort.Ints(tmp)
+			k := make([]byte, len(tmp))
+
+			for i, c := range tmp {
+				k[i] = byte(c)
+			}
+
+			if _, is := exists[string(k)]; is {
+				return
+			} else {
+				results = append(results, tmp)
+				exists[string(k)] = struct{}{}
+			}
+		}
+
+		newPath := make(map[int]int, len(path)+1)
+		for k, v := range path {
+			newPath[k] = v
+		}
+
+		for x, i := range candidates {
+			if t-i < 0 {
+				break
+			}
+
+			sum := preSum[len(candidates)] - preSum[x]
+			if sum < t {
+				break
+			}
+
+			if t, is := path[i]; is && t == times[i] {
+				continue
+			}
+
+			if _, is := path[i]; is {
+				newPath[i]++
+			} else {
+				newPath[i] = 1
+			}
+
+			fn(t-i, newPath)
+			if newPath[i] > 1 {
+				newPath[i]--
+			} else {
+				delete(newPath, i)
+			}
+		}
+	}
+
+	fn(target, make(map[int]int))
+
+	return results
 }

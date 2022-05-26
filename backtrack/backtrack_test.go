@@ -124,3 +124,118 @@ func TestClimbNums(t *testing.T) {
 		})
 	}
 }
+
+func Test_letterCombinations(t *testing.T) {
+	type args struct {
+		digits string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "test1",
+			args: args{
+				digits: "",
+			},
+			want: []string{},
+		},
+		{
+			name: "test2",
+			args: args{
+				digits: "23",
+			},
+			want: []string{
+				"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := letterCombinations(tt.args.digits); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("letterCombinations() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_generateParenthesis(t *testing.T) {
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "test1",
+			args: args{
+				n: 1,
+			},
+			want: []string{"()"},
+		},
+		{
+			name: "test2",
+			args: args{
+				n: 3,
+			},
+			want: []string{
+				"((()))", "(()())", "(())()", "()(())", "()()()",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := generateParenthesis(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("generateParenthesis() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_combinationSum2(t *testing.T) {
+	type args struct {
+		candidates []int
+		target     int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		// {
+		// 	name: "test1",
+		// 	args: args{
+		// 		candidates: []int{
+		// 			10, 1, 2, 7, 6, 1, 5,
+		// 		},
+		// 		target: 8,
+		// 	},
+		// 	want: [][]int{
+		// 		{1, 1, 6},
+		// 		{1, 2, 5},
+		// 		{1, 7},
+		// 		{2, 6},
+		// 	},
+		// },
+		{
+			name: "test2",
+			args: args{
+				candidates: []int{
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+				},
+				target: 30,
+			},
+			want: [][]int{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := combinationSum2(tt.args.candidates, tt.args.target); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("combinationSum2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
