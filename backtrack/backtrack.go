@@ -619,8 +619,6 @@ func solveNQueens(n int) [][]string {
 func exist2(board [][]byte, word string) bool {
 	is := false
 
-	visited := make(map[[2]int]string, 0)
-
 	isValid := func(row, col int, h map[[2]int]struct{}) bool {
 		if _, exists := h[[2]int{row, col}]; exists {
 			return false
@@ -696,4 +694,103 @@ func exist2(board [][]byte, word string) bool {
 	}
 
 	return is
+}
+
+// maxRectangle function    面试题 17.25. 单词矩阵
+func maxRectangle(words []string) []string {
+	results := make([]string, 0)
+
+	isValid := func(s string, path []string) bool {
+		if len(path) == 0 {
+			return true
+		}
+
+		if len(s) != len(path[0]) {
+			return false
+		}
+
+		for i := 0; i < len(path[0]); i++ {
+			t := ""
+			for j := 0; j < len(path); j++ {
+				t = t + path[j][i:i+1]
+			}
+
+			t += s[i : i+1]
+			exists := false
+			for _, s := range words {
+				if strings.HasPrefix(s, t) {
+					exists = true
+					break
+				}
+			}
+			if !exists {
+				return false
+			}
+
+		}
+
+		return true
+	}
+
+	var fn func(path []string)
+	fn = func(path []string) {
+		if len(path)*len(path[0]) > len(results)*len(results[0]) {
+			tmp := make([]string, len(path))
+			copy(tmp, path)
+			results = tmp
+		}
+
+		newPath := make([]string, len(path))
+		copy(newPath, path)
+
+		for i := 0; i < len(words); i++ {
+			if isValid(words[i], path) {
+				newPath = append(newPath, words[i])
+				fn(newPath)
+				newPath = newPath[0 : len(newPath)-1] // back
+			}
+		}
+	}
+	for i := 0; i < len(words); i++ {
+		if len(results) == 0 {
+			results = []string{words[i]}
+		}
+
+		fn([]string{words[i]})
+	}
+
+	return results
+}
+
+// allPathsSourceTarget function    leetcode797
+func allPathsSourceTarget(graph [][]int) [][]int {
+	results := make([][]int, 0)
+
+	var fn func(path []int)
+	fn = func(path []int) {
+		if path[len(path)-1] == len(graph)-1 {
+			tmp := make([]int, len(path))
+			copy(tmp, path)
+			results = append(results, tmp)
+
+			return
+		}
+
+		newPath := make([]int, len(path))
+		copy(newPath, path)
+
+		d := graph[path[len(path)-1]]
+
+		for i := 0; i < len(d); i++ {
+			newPath = append(newPath, d[i])
+			fn(newPath)
+			newPath = newPath[0 : len(newPath)-1]
+		}
+	}
+
+	for i := 0; i < len(graph[0]); i++ {
+		fn([]int{0, graph[0][i]})
+	}
+
+	return results
 }
