@@ -3,6 +3,8 @@ package backtrack
 import (
 	"fmt"
 	"sort"
+	"strconv"
+	"strings"
 )
 
 // WholeArrangement 对一组数字进行全排列
@@ -483,4 +485,215 @@ func exist(board [][]byte, word string) bool {
 	}
 
 	return result
+}
+
+// restoreIpAddresses function    剑指向Offer 087
+func restoreIpAddresses(s string) []string {
+	results := make([]string, 0)
+	ls := len(s)
+
+	var fn func(int, []string)
+	fn = func(offset int, path []string) {
+		if len(path) > 0 {
+			if d, _ := strconv.Atoi(path[len(path)-1]); d > 255 {
+				return
+			}
+		}
+
+		if offset == ls {
+			if len(path) == 4 {
+				results = append(results, strings.Join(path, "."))
+			}
+
+			return
+		} else {
+			if len(path) >= 4 {
+				return
+			}
+		}
+
+		newPath := make([]string, len(path))
+		copy(newPath, path)
+
+		v := ls - offset
+
+		if v >= 1 {
+			newPath = append(newPath, s[offset:offset+1])
+			fn(offset+1, newPath)
+			newPath = newPath[0 : len(newPath)-1]
+		}
+
+		if s[offset:offset+1] == "0" {
+			return
+		}
+
+		if v >= 2 {
+			newPath = append(newPath, s[offset:offset+2])
+			fn(offset+2, newPath)
+			newPath = newPath[0 : len(newPath)-1]
+		}
+
+		if v >= 3 {
+			newPath = append(newPath, s[offset:offset+3])
+			fn(offset+3, newPath)
+			newPath = newPath[0 : len(newPath)-1]
+		}
+	}
+
+	fn(0, []string{})
+
+	return results
+}
+
+// solveNQueens function    面试题 08.12. 八皇后
+func solveNQueens(n int) [][]string {
+	results := make([][]string, 0)
+
+	// 初始化
+	path := make([][]byte, n)
+	for i := 0; i < n; i++ {
+		path[i] = make([]byte, n)
+		for j := 0; j < n; j++ {
+			path[i][j] = '.'
+		}
+	}
+
+	isValid := func(row, col int, path [][]byte) bool {
+		// top
+		for i := row - 1; i >= 0; i-- {
+			if path[i][col] == 'Q' {
+				return false
+			}
+		}
+
+		// left top
+		for i, j := row-1, col-1; i >= 0 && j >= 0; i, j = i-1, j-1 {
+			if path[i][j] == 'Q' {
+				return false
+			}
+		}
+
+		// right top
+		for i, j := row-1, col+1; i >= 0 && j < n; i, j = i-1, j+1 {
+			if path[i][j] == 'Q' {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	var fn func(int, [][]byte)
+	fn = func(row int, path [][]byte) {
+		if row == n {
+			tmp := make([]string, len(path))
+			for k, v := range path {
+				tmp[k] = string(v)
+			}
+			results = append(results, tmp)
+
+			return
+		}
+
+		newPath := make([][]byte, n)
+		for i := 0; i < len(path); i++ {
+			newPath[i] = make([]byte, n)
+			copy(newPath[i], path[i])
+		}
+
+		for col := 0; col < n; col++ {
+			if isValid(row, col, path) {
+				newPath[row][col] = 'Q'
+				fn(row+1, newPath)
+				newPath[row][col] = '.'
+			}
+		}
+	}
+
+	fn(0, path)
+
+	return results
+}
+
+// exist function    剑指 Offer 12. 矩阵中的路径
+func exist2(board [][]byte, word string) bool {
+	is := false
+
+	visited := make(map[[2]int]string, 0)
+
+	isValid := func(row, col int, h map[[2]int]struct{}) bool {
+		if _, exists := h[[2]int{row, col}]; exists {
+			return false
+		}
+
+		return board[row][col] == word[len(h)]
+	}
+
+	var fn func(row, col int, h map[[2]int]struct{}, path []int)
+	fn = func(row, col int, h map[[2]int]struct{}, path []int) {
+		if is {
+			return
+		}
+		if len(path) == len(word)*2 {
+			is = true
+			return
+		}
+
+		newPath := make([]int, len(path))
+		copy(newPath, path)
+
+		newH := make(map[[2]int]struct{}, len(h))
+		for k, v := range h {
+			newH[k] = v
+		}
+
+		// top
+		if row-1 >= 0 && isValid(row-1, col, newH) {
+			newPath = append(newPath, row-1, col)
+			t := [2]int{row - 1, col}
+			newH[t] = struct{}{}
+			fn(row-1, col, newH, newPath)
+			newPath = newPath[0 : len(newPath)-2]
+			delete(newH, t)
+		}
+
+		// down
+		if row+1 < len(board) && isValid(row+1, col, newH) {
+			newPath = append(newPath, row+1, col)
+			t := [2]int{row + 1, col}
+			newH[t] = struct{}{}
+			fn(row+1, col, newH, newPath)
+			newPath = newPath[0 : len(newPath)-2]
+			delete(newH, t)
+		}
+
+		// left
+		if col-1 >= 0 && isValid(row, col-1, newH) {
+			newPath = append(newPath, row, col-1)
+			t := [2]int{row, col - 1}
+			newH[t] = struct{}{}
+			fn(row, col-1, newH, newPath)
+			newPath = newPath[0 : len(newPath)-2]
+		}
+
+		// right
+		if col+1 < len(board[0]) && isValid(row, col+1, newH) {
+			newPath = append(newPath, row, col+1)
+			t := [2]int{row, col + 1}
+			newH[t] = struct{}{}
+			fn(row, col+1, newH, newPath)
+		}
+	}
+
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[0]); j++ {
+			if board[i][j] == word[0] {
+				fn(i, j, map[[2]int]struct{}{
+					{i, j}: {},
+				}, []int{i, j})
+			}
+		}
+	}
+
+	return is
 }

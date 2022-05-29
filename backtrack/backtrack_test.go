@@ -295,3 +295,106 @@ func Test_exist(t *testing.T) {
 		})
 	}
 }
+
+func Test_restoreIpAddresses(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "test1",
+			args: args{
+				s: "25525511135",
+			},
+			want: []string{
+				"255.255.11.135", "255.255.111.35",
+			},
+		},
+		{
+			name: "test2",
+			args: args{
+				s: "0000",
+			},
+			want: []string{"0.0.0.0"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := restoreIpAddresses(tt.args.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("restoreIpAddresses() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_solveNQueens(t *testing.T) {
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]string
+	}{
+		{
+			name: "test1",
+			args: args{
+				n: 4,
+			},
+			want: [][]string{
+				{".Q..", "...Q", "Q...", "..Q."}, {"..Q.", "Q...", "...Q", ".Q.."},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := solveNQueens(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("solveNQueens() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_exist2(t *testing.T) {
+	type args struct {
+		board [][]byte
+		word  string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				board: [][]byte{
+					{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'},
+				},
+				word: "ABCCED",
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{
+				board: [][]byte{
+					{'a', 'b'}, {'c', 'd'},
+				},
+				word: "abcd",
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := exist2(tt.args.board, tt.args.word); got != tt.want {
+				t.Errorf("exist2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
