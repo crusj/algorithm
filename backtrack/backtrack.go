@@ -794,3 +794,67 @@ func allPathsSourceTarget(graph [][]int) [][]int {
 
 	return results
 }
+
+// findTargetSumWays function    leetcode 494 目标和.
+// todo go超时，可以看php版本，golang切片还要复制太麻烦.
+func findTargetSumWays(nums []int, target int) int {
+	result := 0
+
+	var fn func(index int, path []int)
+	fn = func(index int, path []int) {
+		// 结束条件
+		if index == len(nums) {
+			sum := 0
+			for i := 0; i < len(path); i++ {
+				sum += path[i]
+			}
+
+			if sum == target {
+				result++
+			}
+
+			return
+		}
+
+		// 复制路径
+		newPath := make([]int, len(path))
+		copy(newPath, path)
+
+		// 选择加号
+		fn(index+1, newPath)
+
+		// 选择减号
+		newPath[index] = -1 * newPath[index]
+		fn(index+1, newPath)
+	}
+
+	fn(0, nums)
+
+	return result
+}
+
+// findTargetSumWays function    leetcode 494 目标和.
+// todo go超时，可以看php版本，golang切片还要复制太麻烦.
+func findTargetSumWays2(nums []int, target int) int {
+	result := 0
+
+	var fn func(index int, sum int)
+	fn = func(index int, sum int) {
+		// 结束条件
+		if index == len(nums) {
+			if sum == target {
+				result++
+			}
+			return
+		}
+
+		// 选择加号
+		fn(index+1, sum+nums[index])
+		// 选择减号
+		fn(index+1, sum+nums[index]*-1)
+	}
+
+	fn(0, 0)
+
+	return result
+}
