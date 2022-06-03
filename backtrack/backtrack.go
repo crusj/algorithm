@@ -858,3 +858,41 @@ func findTargetSumWays2(nums []int, target int) int {
 
 	return result
 }
+
+// countArrangement function    leetcode526
+func countArrangement(n int) int {
+	result := 0
+	isValid := func(a, b int) bool {
+		return a%b == 0 || b%a == 0
+	}
+
+	var fn func(index int, path map[int]int)
+	fn = func(index int, path map[int]int) {
+		if len(path) == n {
+			fmt.Println(path)
+			result++
+			return
+		}
+
+		newPath := make(map[int]int, len(path))
+		for k, v := range path {
+			newPath[k] = v
+		}
+
+		for i := 1; i <= n; i++ {
+			if _, exists := newPath[i]; !exists && isValid(i, index) {
+				newPath[i] = index
+				fn(index+1, newPath)
+				delete(newPath, i)
+			}
+		}
+	}
+
+	for i := 1; i <= n; i++ {
+		fn(2, map[int]int{
+			i: 1,
+		})
+	}
+
+	return result
+}
