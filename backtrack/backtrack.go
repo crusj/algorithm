@@ -930,3 +930,55 @@ func stair(n int) [][]int {
 
 	return paths
 }
+
+// findSubsequences function    leetcode(491)
+func findSubsequences(nums []int) [][]int {
+	results := make([][]int, 0)
+
+	repeates := make(map[string]struct{})
+
+	var fn func(index int, path []int)
+	fn = func(index int, path []int) {
+		if len(path) >= 2 {
+			tmp := make([]string, len(path))
+			for i, v := range path {
+				tmp[i] = strconv.Itoa(v)
+			}
+			str := strings.Join(tmp, "_")
+
+			if _, ok := repeates[str]; !ok {
+				tmp2 := make([]int, len(path))
+				copy(tmp2, path)
+				results = append(results, tmp2)
+				repeates[str] = struct{}{}
+			}
+		}
+
+		newPath := make([]int, len(path))
+		copy(newPath, path)
+
+		for i := index + 1; i < len(nums); i++ {
+			flag := false
+
+			if len(newPath) > 0 {
+				if nums[i] >= newPath[len(newPath)-1] {
+					flag = true
+				}
+			} else {
+				flag = true
+			}
+
+			if flag {
+				newPath = append(newPath, nums[i])
+				fn(i, newPath)
+				newPath = newPath[0 : len(newPath)-1] // back
+			}
+		}
+	}
+
+	for i := 0; i < len(nums); i++ {
+		fn(i, []int{nums[i]})
+	}
+
+	return results
+}
