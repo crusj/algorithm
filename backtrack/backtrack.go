@@ -896,3 +896,37 @@ func countArrangement(n int) int {
 
 	return result
 }
+
+// 楼梯回溯
+func stair(n int) [][]int {
+	paths := make([][]int, 0)
+
+	var fn func(n int, path []int)
+
+	fn = func(n int, path []int) {
+		if n < 0 {
+			return
+		}
+
+		if n == 0 {
+			tmp := make([]int, len(path))
+			copy(tmp, path)
+			paths = append(paths, tmp)
+			return
+		}
+
+		newPath := make([]int, len(path))
+		copy(newPath, path)
+
+		newPath = append(newPath, 1)
+		fn(n-1, newPath)
+		newPath = newPath[0 : len(newPath)-1] // back
+
+		newPath = append(newPath, 2)
+		fn(n-2, newPath)
+	}
+
+	fn(n, []int{})
+
+	return paths
+}

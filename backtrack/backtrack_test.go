@@ -559,3 +559,33 @@ func Test_countArrangement(t *testing.T) {
 		})
 	}
 }
+
+func Test_stair(t *testing.T) {
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		{
+			name: "test1",
+			args: args{
+				n: 3,
+			},
+			want: [][]int{
+				{1, 1, 1},
+				{1, 2},
+				{2, 1},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := stair(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("stair() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
