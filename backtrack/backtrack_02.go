@@ -9,6 +9,10 @@ func makesquare(matchsticks []int) bool {
 		sum += item
 	}
 
+	if sum%4 != 0 {
+		return false
+	}
+
 	sideLen := sum / 4
 
 	isValid := func(path []int) bool {
