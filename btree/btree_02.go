@@ -51,11 +51,45 @@ func maxDepth(node *TreeNode) int {
 	return 1 + max(leftMax, rightMax)
 }
 
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val int
- *     Left *TreeNode
- *     Right *TreeNode
- * }
- */
+// leetcode 111
+// 二叉树最小深度
+func minDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	depth := 0
+	nodes := []*TreeNode{root}
+
+	for {
+		if len(nodes) == 0 {
+			return depth
+		}
+
+		nexts := make([]*TreeNode, 0)
+		depth++
+
+		isMinNode := false
+		for _, next := range nodes {
+			if next.Left == nil && next.Right == nil {
+				isMinNode = true
+				break
+			}
+
+			if next.Left != nil {
+				nexts = append(nexts, next.Left)
+			}
+
+			if next.Right != nil {
+				nexts = append(nexts, next.Right)
+			}
+		}
+
+		if isMinNode {
+			return depth
+		}
+
+		nodes = make([]*TreeNode, len(nexts))
+		copy(nodes, nexts)
+	}
+}
