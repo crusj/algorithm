@@ -50,3 +50,12 @@ func maxDepth(node *TreeNode) int {
 
 	return 1 + max(leftMax, rightMax)
 }
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
