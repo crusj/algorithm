@@ -140,9 +140,33 @@ func isSymmetric_v2(root *TreeNode) bool {
 			return false
 		}
 
-        return fn(left.Right,right.Left) && fn(left.Left,right.Right)
+		return fn(left.Right, right.Left) && fn(left.Left, right.Right)
 	}
 
-
 	return fn(root.Left, root.Right)
+}
+
+// leetcode 110
+func isBalanced(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+
+	var fn func(root *TreeNode) bool
+	fn = func(root *TreeNode) bool {
+		if root == nil {
+			return true
+		}
+
+        leftMaxDepth := maxDepth(root.Left)
+        rightMaxDepth := maxDepth(root.Right)
+
+		if tmp := leftMaxDepth - rightMaxDepth; tmp > 1 || tmp < -1 {
+			return false
+		}
+
+		return fn(root.Left) && fn(root.Right)
+	}
+
+	return fn(root)
 }
