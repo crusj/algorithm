@@ -10,7 +10,6 @@ func inorderTraversal(root *TreeNode) []int {
 
 	res = append(res, inorderTraversal(root.Left)...)
 	res = append(res, root.Val)
-	res = append(res, inorderTraversal(root.Right)...)
 
 	return res
 }
@@ -119,4 +118,31 @@ func isSymmetric(root *TreeNode) bool {
 	}
 
 	return true
+}
+
+// leetcode101_v2
+func isSymmetric_v2(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+
+	var fn func(left *TreeNode, right *TreeNode) bool
+	fn = func(left, right *TreeNode) bool {
+		if left == nil && right == nil {
+			return true
+		}
+
+		if left != nil && right != nil {
+			if left.Val != right.Val {
+				return false
+			}
+		} else {
+			return false
+		}
+
+        return fn(left.Right,right.Left) && fn(left.Left,right.Right)
+	}
+
+
+	return fn(root.Left, root.Right)
 }
