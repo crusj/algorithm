@@ -78,3 +78,45 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 	// 右子树相同与左子树相同
 	return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
 }
+
+// leetcode101
+// BFS
+func isSymmetric(root *TreeNode) bool {
+	nodes := make([]*TreeNode, 0)
+	// 第一层
+	nodes = append(nodes, root)
+
+	for len(nodes) > 0 {
+		nextNodes := make([]*TreeNode, 0)
+		for _, node := range nodes {
+			if node != nil {
+				nextNodes = append(nextNodes, node.Left, node.Right)
+			}
+		}
+
+		flag := true
+		for i, j := 0, len(nextNodes)-1; i <= j; i, j = i+1, j-1 {
+			if nextNodes[i] == nil && nextNodes[j] == nil {
+				continue
+			}
+
+			if nextNodes[i] == nil || nextNodes[j] == nil {
+				flag = false
+				break
+			}
+
+			if nextNodes[i].Val != nextNodes[j].Val {
+				flag = false
+				break
+			}
+		}
+
+		if !flag {
+			return false
+		}
+
+		nodes = nextNodes
+	}
+
+	return true
+}
