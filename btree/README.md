@@ -7,3 +7,4 @@
 [x] leetcode100二叉树棵树是否相同
 [x] leetcode101二叉树是否对称
 [x] leetcode110二叉树是否平衡数
+[x] leetcode112二叉树路径总和

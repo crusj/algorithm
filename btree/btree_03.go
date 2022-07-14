@@ -158,8 +158,8 @@ func isBalanced(root *TreeNode) bool {
 			return true
 		}
 
-        leftMaxDepth := maxDepth(root.Left)
-        rightMaxDepth := maxDepth(root.Right)
+		leftMaxDepth := maxDepth(root.Left)
+		rightMaxDepth := maxDepth(root.Right)
 
 		if tmp := leftMaxDepth - rightMaxDepth; tmp > 1 || tmp < -1 {
 			return false
@@ -169,4 +169,23 @@ func isBalanced(root *TreeNode) bool {
 	}
 
 	return fn(root)
+}
+
+// leetcode 112
+// 前序遍历路径总和
+func hasPathSum(root *TreeNode, targetSum int) bool {
+	var fn func(node *TreeNode, sum int) bool
+	fn = func(node *TreeNode, sum int) bool {
+		if node == nil {
+			return false
+		}
+
+		if sum += node.Val; sum == targetSum && node.Left == nil && node.Right == nil {
+			return true
+		}
+
+		return fn(node.Left, sum) || fn(node.Right, sum)
+	}
+
+	return fn(root, 0)
 }
