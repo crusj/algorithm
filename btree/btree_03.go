@@ -38,6 +38,7 @@ func inorderTraversal_v2(root *TreeNode) []int {
 
 // leetcode94
 // v3
+// 与v2的区别是把要变化的结果值作为参数传给内部函数
 func inorderTraversal_v3(root *TreeNode) []int {
 	res := make([]int, 0)
 	if root == nil {
@@ -58,4 +59,22 @@ func inorderTraversal_v3(root *TreeNode) []int {
 	fn(root, res)
 
 	return res
+}
+
+// leetcode100
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+	if p == nil && q == nil {
+		return true
+	}
+
+	if p != nil && q != nil {
+		if p.Val != q.Val {
+			return false
+		}
+	} else {
+		return false
+	}
+
+	// 右子树相同与左子树相同
+	return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
 }
