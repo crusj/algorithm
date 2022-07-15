@@ -234,3 +234,24 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 
 	return nil
 }
+
+// leetcode235
+// 二叉搜索树的两个节点的最近公共祖先
+// 利用搜索二叉树的性质
+func lowestCommonAncestor_v2(root, p, q *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	// 右子树去找
+	if root.Val < p.Val && root.Val < q.Val {
+		return lowestCommonAncestor_v2(root.Right, p, q)
+	}
+
+	// 左子树去找
+	if root.Val > p.Val && root.Val > q.Val {
+		return lowestCommonAncestor_v2(root.Left, p, q)
+	}
+
+    return root
+}
