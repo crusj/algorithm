@@ -189,3 +189,48 @@ func hasPathSum(root *TreeNode, targetSum int) bool {
 
 	return fn(root, 0)
 }
+
+// 前序遍历判断是否存在某个节点
+func findNode(root *TreeNode, val1, val2 int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	if root.Val == val1 || root.Val == val2 {
+		return root
+	}
+
+	leftFind := findNode(root.Left, val1, val2)
+	if leftFind != nil {
+		return leftFind
+	}
+
+	rightFind := findNode(root.Right, val1, val2)
+	if rightFind.Right != nil {
+		return rightFind
+	}
+
+	return nil
+}
+
+// leetcode235
+// 二叉搜索树的两个节点的最近公共祖先
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	// 情况一
+	if root == p || root == q {
+		return root
+	}
+
+	// 情况2
+	left := lowestCommonAncestor(root.Left, p, q)
+	right := lowestCommonAncestor(root.Right, p, q)
+	if left != nil && right != nil {
+		return root
+	}
+
+	return nil
+}
