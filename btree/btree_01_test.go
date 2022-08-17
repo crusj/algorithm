@@ -7,27 +7,25 @@ import (
 
 func Test_preOrderTraverse(t *testing.T) {
 	type args struct {
-		tree *Node
+		tree *BinaryNode
 	}
 	tests := []struct {
 		name string
 		args args
-		want []int
+		want []int64
 	}{
 		{
 			name: "test1",
 			args: args{
-				tree: tree,
+				tree: NewBinaryTree([]int64{1, 2, 3, 4, 5}, &BinarySearchTree{}),
 			},
-			want: []int{
-				1, 2, 5, 4, 6, 7, 3, 8, 9,
-			},
+			want: []int64{1, 2, 3, 4, 5},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := preOrderTraverse(tt.args.tree); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("preOrderTraverse() = %v, want %v", got, tt.want)
+				t.Errorf("preOrderTraverse() = %+v, want %+v", got, tt.want)
 			}
 		})
 	}
@@ -35,20 +33,20 @@ func Test_preOrderTraverse(t *testing.T) {
 
 func Test_preOrderTraverseV2(t *testing.T) {
 	type args struct {
-		tree *Node
+		tree *BinaryNode
 	}
 	tests := []struct {
 		name string
 		args args
-		want []int
+		want []int64
 	}{
 		{
 			name: "test1",
 			args: args{
-				tree: tree,
+				tree: NewBinaryTree([]int64{1, 2, 3, 4, 5}, &BinarySearchTree{}),
 			},
-			want: []int{
-				1, 2, 5, 4, 6, 7, 3, 8, 9,
+			want: []int64{
+				1, 2, 3, 4, 5,
 			},
 		},
 	}
