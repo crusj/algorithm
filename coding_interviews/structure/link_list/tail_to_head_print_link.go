@@ -11,7 +11,7 @@ func printListFromTailToHead(head *ListNode) []int {
 		if head != nil {
 			tf(head.Next)
 			ret = append(ret, head.Val)
-		}
+        }
 	}
 
 	tf(head)
