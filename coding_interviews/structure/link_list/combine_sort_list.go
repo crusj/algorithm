@@ -6,6 +6,7 @@ func Merge(pHead1 *ListNode, pHead2 *ListNode) *ListNode {
 	if pHead1 == nil {
 		return pHead2
 	}
+
 	if pHead2 == nil {
 		return pHead1
 	}
