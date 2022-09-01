@@ -21,3 +21,11 @@ func TestNewBinaryTreeByPre(t *testing.T) {
 		log.Fatalf("Binary Search Tree failed: %+v", preOrderTraverse(root))
 	}
 }
+
+func TestNewBinaryTreeByPre2(t *testing.T) {
+	// 普通树
+	root := NewBinaryTree([]int64{5, 4, 8, 11, -1, 13, 4, 7, 2, -1, -1, 5, 1}, &BinaryTree{})
+	if !reflect.DeepEqual(preOrderTraverse(root), []int64{5, 4, 11, 7, 2, 8, 13, 4, 5, 1}) {
+		log.Fatalf("Binary Search Tree failed: %+v", preOrderTraverse(root))
+	}
+}
