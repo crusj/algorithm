@@ -3,4 +3,4 @@ Relearn algorithm.
 
 - [x] backtrack
 - [x] btree
-- [] queue and stack
+- [ ] queue and stack
