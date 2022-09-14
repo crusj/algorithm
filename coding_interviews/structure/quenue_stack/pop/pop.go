@@ -1,4 +1,4 @@
-package quenuestack
+package pop
 
 var (
 	stack1 []int
