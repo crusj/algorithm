@@ -63,7 +63,27 @@ func TestFind2(t *testing.T) {
 		name string
 		args args
 		want bool
+	}{}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Find2(tt.args.target, tt.args.array); got != tt.want {
+				t.Errorf("Find2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFind3(t *testing.T) {
+	type args struct {
+		target int
+		array  [][]int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
 	}{
+		// TODO: Add test cases.
 		{
 			name: "test1",
 			args: args{
@@ -97,8 +117,8 @@ func TestFind2(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Find2(tt.args.target, tt.args.array); got != tt.want {
-				t.Errorf("Find2() = %v, want %v", got, tt.want)
+			if got := Find3(tt.args.target, tt.args.array); got != tt.want {
+				t.Errorf("Find3() = %v, want %v", got, tt.want)
 			}
 		})
 	}

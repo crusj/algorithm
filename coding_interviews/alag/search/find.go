@@ -67,3 +67,26 @@ func Find2(target int, array [][]int) bool {
 
 	return tf(array, 0, len(array)-1)
 }
+
+func Find3(target int, array [][]int) bool {
+	width := len(array[0])
+	depth := len(array)
+
+	i := depth - 1
+	j := 0
+
+	for i >= 0 && j < width {
+		if array[i][j] == target {
+			return true
+		}
+
+		if array[i][j] < target {
+			j++
+			continue
+		}
+
+		i--
+	}
+
+	return false
+}
