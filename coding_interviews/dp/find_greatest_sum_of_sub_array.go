@@ -35,5 +35,36 @@ func FindGreatestSumOfSubArray1(array []int) int {
 // FindGreatestSumOfSubArrayDP function  
 // 动态规划
 func FindGreatestSumOfSubArrayDP(array []int) int {
-	return 0
+	dp := make(map[int]int, 0)
+
+	var fn func(i int) int
+	fn = func(i int) int {
+		if i == 0 {
+			return array[i]
+		}
+
+		dpi := 0
+		if v, exists := dp[i-1]; exists {
+			dpi = v
+		} else {
+			dpi = fn(i - 1)
+			dp[i-1] = dpi
+		}
+
+		if dpi < 0 {
+			return array[i]
+		}
+
+		return array[i] + dpi
+	}
+
+	max := math.MinInt32
+	for i := len(array) - 1; i >= 0; i-- {
+		tmp := fn(i)
+		if tmp > max {
+			max = tmp
+		}
+	}
+
+	return max
 }
