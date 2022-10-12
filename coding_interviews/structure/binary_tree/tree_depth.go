@@ -35,7 +35,7 @@ func TreeDepth(pRoot *TreeNode) int {
 	// return b
 
 	// 版本三
-	a, b := 1+TreeDepth(pRoot.Left), 1+TreeDepth(pRoot.Right)
+	a, b := TreeDepth(pRoot.Left), TreeDepth(pRoot.Right)
 	if a > b {
 		return a + 1
 	}

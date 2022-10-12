@@ -2,7 +2,6 @@ package binarytree
 
 // 查找路径
 func FindPath(root *TreeNode, expectNumber int) [][]int {
-	// write code here
 	if root == nil {
 		return nil
 	}
@@ -23,15 +22,11 @@ func FindPath(root *TreeNode, expectNumber int) [][]int {
 		copy(newPath, path)
 
 		if root.Left != nil {
-			newPath = append(newPath, int(root.Left.Val))
-			tf(root.Left, newPath, sum+int(root.Left.Val))
-			// rollback
-			newPath = newPath[:len(newPath)-1]
+			tf(root.Left, append(newPath, int(root.Left.Val)), sum+int(root.Left.Val))
 		}
 
 		if root.Right != nil {
-			newPath = append(newPath, int(root.Right.Val))
-			tf(root.Right, newPath, sum+int(root.Right.Val))
+			tf(root.Right, append(newPath, int(root.Right.Val)), sum+int(root.Right.Val))
 		}
 	}
 
