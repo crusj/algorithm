@@ -275,6 +275,7 @@ func FindPath(root *TreeNode, expectNumber int) [][]int {
 	if root == nil {
 		return nil
 	}
+
 	// write code here
 	ret := make([][]int, 0)
 
@@ -283,23 +284,22 @@ func FindPath(root *TreeNode, expectNumber int) [][]int {
 		// 叶子节点
 		if root.Left == nil && root.Right == nil {
 			if expectNumber == 0 {
-				ret = append(ret, path)
+				tmp := make([]int, len(path))
+				copy(tmp, path)
+				ret = append(ret, tmp)
 			}
 
 			return
 		}
 
-		newPath := make([]int, len(path))
-		copy(newPath, path)
-
 		if root.Left != nil {
-			newPath = append(newPath, int(root.Left.Val))
-			tf(root.Left, expectNumber-int(root.Left.Val), newPath)
-			newPath = newPath[0 : len(newPath)-1] // back trace
+			path := append(path, int(root.Left.Val))
+			tf(root.Left, expectNumber-int(root.Left.Val), path)
+			path = path[0 : len(path)-1] // back trace
 		}
 
 		if root.Right != nil {
-			tf(root.Right, expectNumber-int(root.Right.Val), append(newPath, int(root.Right.Val)))
+			tf(root.Right, expectNumber-int(root.Right.Val), append(path, int(root.Right.Val)))
 		}
 	}
 

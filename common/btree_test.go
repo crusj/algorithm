@@ -21,3 +21,23 @@ func ft(node *TreeNode, ret *[]int) {
 		ft(node.Right, ret)
 	}
 }
+
+func mt(node *TreeNode, ret *[]int) {
+	if node.Left != nil {
+		ft(node.Left, ret)
+	}
+	*ret = append(*ret, int(node.Val))
+	if node.Right != nil {
+		ft(node.Right, ret)
+	}
+}
+
+func lt(node *TreeNode, ret *[]int) {
+	if node.Left != nil {
+		ft(node.Left, ret)
+	}
+	if node.Right != nil {
+		ft(node.Right, ret)
+	}
+	*ret = append(*ret, int(node.Val))
+}

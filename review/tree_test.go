@@ -415,7 +415,6 @@ func TestFindPath(t *testing.T) {
 			},
 			want: [][]int{
 				{5, 4, 11, 2},
-				{5, 8, 4, 5},
 			},
 		},
 	}
