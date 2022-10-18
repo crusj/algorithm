@@ -426,3 +426,157 @@ func TestFindPath(t *testing.T) {
 		})
 	}
 }
+
+func TestConvert(t *testing.T) {
+	type args struct {
+		pRootOfTree *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want *TreeNode
+	}{
+		{
+			name: "test1",
+			args: args{
+				pRootOfTree: nil,
+			},
+			want: nil,
+		},
+		{
+			name: "test2",
+			args: args{
+				pRootOfTree: NewBinaryTree([]int64{}, &BinarySearchTree{}),
+			},
+			want: &TreeNode{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Convert(tt.args.pRootOfTree); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Convert() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPrintLine(t *testing.T) {
+	type args struct {
+		pRoot *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want [][]int
+	}{
+		{
+			name: "testnil",
+			args: args{
+				pRoot: nil,
+			},
+			want: nil,
+		},
+
+		{
+			name: "test1",
+			args: args{
+				pRoot: NewBinaryTree([]int64{1, 2, 3, -1, -1, 4, 5}, &BinaryTree{}),
+			},
+			want: [][]int{
+				{1},
+				{2, 3},
+				{4, 5},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Print2(tt.args.pRoot); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("PrintLine() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFindPathSum2(t *testing.T) {
+	type args struct {
+		root *TreeNode
+		sum  int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "test1",
+			args: args{
+				root: nil,
+				sum:  0,
+			},
+			want: 0,
+		},
+		{
+			name: "test2",
+			args: args{
+				root: NewBinaryTree([]int64{2, 2, 3, 4, 5, 4, 4, -1, -1, -2}, &BinaryTree{}),
+				sum:  7,
+			},
+			want: 4,
+		},
+		{
+			name: "test3",
+			args: args{
+				root: NewBinaryTree([]int64{1, -1, 2, -1, -1, -1, 3, -1, -1, -1, -1, -1, 4}, &BinaryTree{}),
+				sum:  3,
+			},
+			want: 2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FindPath2(tt.args.root, tt.args.sum); got != tt.want {
+				t.Errorf("FindPathSum2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_lowestCommonAncestor2(t *testing.T) {
+	type args struct {
+		root *TreeNode
+		o1   int
+		o2   int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "test1",
+			args: args{
+				root: NewBinaryTree([]int64{3, 5, 1, 6, 2, 0, 8, -1, -1, 7, 4}, &BinaryTree{}),
+				o1:   5,
+				o2:   1,
+			},
+			want: 3,
+		},
+		{
+			name: "test2",
+			args: args{
+				root: NewBinaryTree([]int64{3, 5, 1, 6, 2, 0, 8, -1, -1, 7, 4}, &BinaryTree{}),
+				o1:   2,
+				o2:   7,
+			},
+			want: 2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := lowestCommonAncestor2(tt.args.root, tt.args.o1, tt.args.o2); got != tt.want {
+				t.Errorf("lowestCommonAncestor() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

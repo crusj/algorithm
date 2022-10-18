@@ -54,3 +54,11 @@ func bLowestCommonAncestor(root *TreeNode, p int, q int) int {
 
 	return int(root.Val)
 }
+
+var (
+	stack1 []int
+	stack2 []int
+)
+
+func Push(node int) {
+}

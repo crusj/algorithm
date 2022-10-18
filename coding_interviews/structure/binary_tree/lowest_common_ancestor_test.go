@@ -31,6 +31,15 @@ func Test_lowestCommonAncestor(t *testing.T) {
 			},
 			want: 2,
 		},
+		{
+			name: "test3",
+			args: args{
+				root: NewBinaryTree([]int64{1, 2, 3, 4, 5}, &BinaryTree{}),
+				o1:   4,
+				o2:   5,
+			},
+			want: 2,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

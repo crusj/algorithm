@@ -306,3 +306,214 @@ func FindPath(root *TreeNode, expectNumber int) [][]int {
 	tf(root, expectNumber-int(root.Val), []int{int(root.Val)})
 	return ret
 }
+
+func Convert(pRootOfTree *TreeNode) *TreeNode {
+	if pRootOfTree == nil {
+		return nil
+	}
+
+	var p, ret *TreeNode
+
+	var tf func(node *TreeNode)
+	tf = func(node *TreeNode) {
+		if node.Left != nil {
+			tf(node.Left)
+		}
+		if p == nil {
+			p = node
+			ret = p
+		} else {
+			p.Right = node
+			node.Left = p
+			p = node
+		}
+		if node.Right != nil {
+			tf(node.Right)
+		}
+	}
+	tf(pRootOfTree)
+
+	return ret
+}
+
+func Print2(pRoot *TreeNode) [][]int {
+	if pRoot == nil {
+		return nil
+	}
+
+	// write code here
+	ret := make([][]int, 0)
+
+	var tf func(data []*TreeNode)
+	tf = func(data []*TreeNode) {
+		if len(data) == 0 {
+			return
+		}
+		tmp := make([]*TreeNode, 0)
+
+		val := make([]int, len(data))
+		for i, item := range data {
+			val[i] = int(item.Val)
+			if item.Left != nil {
+				tmp = append(tmp, item.Left)
+			}
+			if item.Right != nil {
+				tmp = append(tmp, item.Right)
+			}
+		}
+
+		ret = append(ret, val)
+		tf(tmp)
+	}
+
+	tf([]*TreeNode{pRoot})
+	return ret
+}
+
+func FindPath2(root *TreeNode, sum int) int {
+	// write code here
+	if root == nil {
+		return 0
+	}
+
+	ret := 0
+
+	var tf func(node *TreeNode, left int)
+	tf = func(node *TreeNode, left int) {
+		if left == int(node.Val) {
+			ret++
+		}
+
+		if node.Left != nil {
+			tf(node.Left, left-int(node.Val))
+		}
+
+		if node.Right != nil {
+			tf(node.Right, left-int(node.Val))
+		}
+	}
+
+	var frontTraverse func(root *TreeNode)
+	frontTraverse = func(root *TreeNode) {
+		tf(root, sum)
+		if root.Left != nil {
+			frontTraverse(root.Left)
+		}
+		if root.Right != nil {
+			frontTraverse(root.Right)
+		}
+	}
+
+	frontTraverse(root)
+
+	return ret
+}
+
+func lowestCommonAncestor2(root *TreeNode, o1 int, o2 int) int {
+	// write code here
+	repeated := map[*TreeNode]int{}
+	var frontTraverse func(root *TreeNode) int
+	frontTraverse = func(root *TreeNode) int {
+		if _, exists := repeated[root]; exists {
+			return repeated[root]
+		}
+
+		if root == nil {
+			return math.MinInt64
+		}
+
+		if int(root.Val) == o1 || int(root.Val) == o2 {
+			repeated[root] = int(root.Val)
+			return int(root.Val)
+		}
+
+		repeated[root] = frontTraverse(root.Left)
+		if repeated[root] != math.MinInt64 {
+			return repeated[root]
+		}
+
+		repeated[root] = frontTraverse(root.Right)
+		if repeated[root] != math.MinInt64 {
+			return repeated[root]
+		}
+
+		return math.MinInt64
+	}
+
+	var tf func(root *TreeNode) int
+	tf = func(root *TreeNode) int {
+		if int(root.Val) == o1 || int(root.Val) == o2 {
+			return int(root.Val)
+		}
+
+		lv := frontTraverse(root.Left)
+		rv := frontTraverse(root.Right)
+		if lv != math.MinInt64 && rv != math.MinInt64 {
+			return int(root.Val)
+		}
+		if lv != math.MinInt64 && rv == math.MinInt64 {
+			return tf(root.Left)
+		}
+
+		if lv == math.MinInt64 && rv != math.MinInt64 {
+			return tf(root.Right)
+		}
+
+		return math.MinInt64
+	}
+
+	return tf(root)
+}
+
+var (
+	stack1 []int
+	stack2 []int
+)
+
+func Push(node int) {
+	stack1 = append(stack1, node)
+}
+
+func Pop() int {
+	tmp := stack1[len(stack1)-1]
+	stack1 = stack1[1:]
+
+	return tmp
+}
+
+var (
+	stack3   []int
+	minStack []int
+)
+
+func Push2(node int) {
+	stack3 = append(stack3, node)
+
+	if len(minStack) == 0 || node < minStack[len(minStack)-1] {
+		minStack = append(minStack, node)
+	} else {
+		minStack = append(minStack, minStack[len(minStack)-1])
+	}
+}
+
+func Pop2() {
+	stack3 = stack3[0 : len(stack3)-1]
+	minStack = minStack[0 : len(minStack)-1]
+}
+
+func Top2() int {
+	return stack3[len(stack3)-1]
+}
+
+func Min2() int {
+	// write code here
+	return minStack[len(minStack)-1]
+}
+
+func ReverseSentence( str string ) string {
+    // write code here
+    var 
+    func ReverseSentence( str string ) string {
+            // write code here
+        }
+}
