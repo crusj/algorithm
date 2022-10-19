@@ -5,10 +5,6 @@ import (
 )
 
 func IsPopOrder(pushV []int, popV []int) bool {
-	// write code here
-	path := make([]int, 0)
-	stack := make([]int, 0)
-
 	var tf func(pushV []int, stack []int, path []int) bool
 	tf = func(pushV, stack []int, path []int) bool {
 		if len(path) == len(popV) {
@@ -21,12 +17,7 @@ func IsPopOrder(pushV []int, popV []int) bool {
 
 		// 出栈
 		if len(stack) > 0 {
-			newStack := make([]int, len(stack))
-			copy(newStack, stack)
-
-			newPath := make([]int, len(path))
-			copy(newPath, path)
-			if tf(pushV, newStack[0:len(stack)-1], append(newPath, stack[len(stack)-1])) {
+			if tf(pushV, stack[0:len(stack)-1], append(path, stack[len(stack)-1])) {
 				return true
 			}
 		}
@@ -39,5 +30,5 @@ func IsPopOrder(pushV []int, popV []int) bool {
 		return false
 	}
 
-	return tf(pushV, stack, path)
+	return tf(pushV, []int{}, []int{})
 }

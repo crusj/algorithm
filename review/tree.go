@@ -2,6 +2,8 @@ package review
 
 import (
 	"math"
+	"reflect"
+	"strings"
 
 	. "github.com/crusj/algorithm/common"
 )
@@ -510,10 +512,59 @@ func Min2() int {
 	return minStack[len(minStack)-1]
 }
 
-func ReverseSentence( str string ) string {
-    // write code here
-    var 
-    func ReverseSentence( str string ) string {
-            // write code here
-        }
+func ReverseSentence(str string) string {
+	ret := ""
+	var tf func(string, int)
+	tf = func(s string, i int) {
+		tmp := []byte{}
+		for i < len(str) && str[i] != ' ' {
+			tmp = append(tmp, str[i])
+			i++
+		}
+
+		if i < len(str) {
+			tf(s, i+1)
+		}
+
+		ret += " " + string(tmp)
+	}
+
+	tf(str, 0)
+	return strings.TrimLeft(ret, " ")
+}
+
+// [1, 2, 3, 4, 5] [4, 5, 3, 2, 1]
+func IsPopOrder(pushV []int, popV []int) bool {
+	is := false
+	var tf func(index int, stack []int, path []int)
+	tf = func(index int, stack, path []int) {
+		if is {
+			return
+		}
+
+		if len(path) == len(popV) {
+			if reflect.DeepEqual(path, popV) {
+				is = true
+			}
+			return
+		}
+
+		// push
+		if index < len(pushV) {
+			stack = append(stack, pushV[index])
+			tf(index+1, stack, path)
+			stack = stack[0 : len(stack)-1]
+		}
+
+		// pop
+		if len(stack) > 0 {
+			if popV[len(path)] != stack[len(stack)-1] {
+				return
+			}
+			tf(index, stack[0:len(stack)-1], append(path, stack[len(stack)-1]))
+		}
+	}
+
+	tf(0, []int{}, []int{})
+	return is
 }

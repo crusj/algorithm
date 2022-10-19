@@ -580,3 +580,57 @@ func Test_lowestCommonAncestor2(t *testing.T) {
 		})
 	}
 }
+
+func TestReverseSentence(t *testing.T) {
+	type args struct {
+		str string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "test1",
+			args: args{
+				str: "I am man",
+			},
+			want: "man am I",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := ReverseSentence(tt.args.str); got != tt.want {
+				t.Errorf("ReverseSentence() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestIsPopOrder(t *testing.T) {
+	type args struct {
+		pushV []int
+		popV  []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				pushV: []int{1, 2, 3, 4},
+				popV:  []int{4, 3, 2, 1},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsPopOrder(tt.args.pushV, tt.args.popV); got != tt.want {
+				t.Errorf("IsPopOrder() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
