@@ -568,3 +568,42 @@ func IsPopOrder(pushV []int, popV []int) bool {
 	tf(0, []int{}, []int{})
 	return is
 }
+
+func GetNumberOfK(data []int, k int) int {
+	// write code here
+	times := 0
+	var tf func(a, b int)
+	tf = func(a, b int) {
+		if a > b {
+			return
+		}
+
+		pivot := (a + b) / 2
+		if data[pivot] == k {
+			for a <= pivot {
+				if data[a] == k {
+					times++
+				}
+				a++
+			}
+
+			for b > pivot {
+				if data[b] == k {
+					times++
+				}
+				b--
+			}
+
+			return
+		}
+
+		if data[pivot] > k {
+			tf(a, pivot-1)
+		} else {
+			tf(pivot+1, b)
+		}
+	}
+
+	tf(0, len(data)-1)
+	return times
+}
