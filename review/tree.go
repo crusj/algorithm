@@ -507,8 +507,7 @@ func Top2() int {
 	return stack3[len(stack3)-1]
 }
 
-func Min2() int {
-	// write code here
+func Min2() int { // write code here
 	return minStack[len(minStack)-1]
 }
 
@@ -606,4 +605,33 @@ func GetNumberOfK(data []int, k int) int {
 
 	tf(0, len(data)-1)
 	return times
+}
+
+func minNumberInRotateArray(rotateArray []int) int {
+	var tf func(b, e int) int
+	tf = func(b, e int) int {
+		if b > e {
+			return math.MinInt64
+		}
+
+		pivot := (b + e) / 2
+		if pivot-1 >= b && rotateArray[pivot-1] > rotateArray[pivot] {
+			return rotateArray[pivot]
+		}
+
+		if pivot+1 <= e && rotateArray[pivot] > rotateArray[pivot+1] {
+			return rotateArray[pivot+1]
+		}
+		if a := tf(b, pivot-1); a != math.MinInt64 {
+			return a
+		}
+
+		return tf(pivot+1, e)
+	}
+
+	if v := tf(0, len(rotateArray)-1); v == math.MinInt64 {
+		return rotateArray[0]
+	} else {
+		return v
+	}
 }
