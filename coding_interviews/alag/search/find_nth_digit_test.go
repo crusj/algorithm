@@ -39,6 +39,13 @@ func Test_findNthDigit(t *testing.T) {
 			},
 			want: 1,
 		},
+		{
+			name: "test5",
+			args: args{
+				n: 500000000,
+			},
+			want: 8,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

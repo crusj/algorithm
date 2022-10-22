@@ -635,3 +635,32 @@ func minNumberInRotateArray(rotateArray []int) int {
 		return v
 	}
 }
+
+//
+// [0    -   10)
+// [10   -   100)
+// [100  -   1000)
+// [1000 -   10000)
+
+// 找出范围
+// 找出是哪个数
+// 找出第几位
+func findNthDigit(n int) int {
+	// write code here
+	a, b := 0, 10
+	i := 1
+	tmp := n
+	for {
+		if n >= a && n < b {
+			break
+		}
+
+		tmp -= (b - a) * i
+		i++
+		a, b = b, b*10
+	}
+
+	x := a + tmp/i
+	println(x)
+	return 0
+}

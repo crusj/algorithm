@@ -20,7 +20,8 @@ func findNthDigit(n int) int {
 	i := 1
 	a, b := 0, 10
 	for n > (b-a)*i {
-		n -= (b - a) * i
+		t := (b - a) * i
+		n -= t
 		i++
 		a, b = b, b*10
 	}
