@@ -3,6 +3,7 @@ package review
 import (
 	"math"
 	"reflect"
+	"strconv"
 	"strings"
 
 	. "github.com/crusj/algorithm/common"
@@ -637,30 +638,115 @@ func minNumberInRotateArray(rotateArray []int) int {
 }
 
 //
-// [0    -   10)
-// [10   -   100)
-// [100  -   1000)
-// [1000 -   10000)
+// [0    -   10)     10
+// [10   -   100)    90
+// [100  -   1000)   900
+// [1000 -   10000)  9000
 
 // 找出范围
 // 找出是哪个数
 // 找出第几位
 func findNthDigit(n int) int {
 	// write code here
+
 	a, b := 0, 10
 	i := 1
-	tmp := n
-	for {
-		if n >= a && n < b {
-			break
-		}
-
-		tmp -= (b - a) * i
+	for n > (b-a)*i {
+		n -= (b - a) * i
 		i++
 		a, b = b, b*10
 	}
 
-	x := a + tmp/i
-	println(x)
-	return 0
+	return int(strconv.Itoa(a + n/i)[a%i] - '0')
+}
+
+func Find(target int, array [][]int) bool {
+	if array == nil {
+		return false
+	}
+
+	i, j := len(array)-1, 0
+	for i >= 0 && j < len(array[0]) {
+		if target == array[i][j] {
+			return true
+		}
+		if target < array[i][j] {
+			i--
+		} else {
+			j++
+		}
+	}
+
+	return false
+}
+
+func Permutation(str string) []string {
+	ret := make([]string, 0)
+	if str == "" {
+		return nil
+	}
+
+	var tf func(slices []byte, index int, path []byte)
+	tf = func(slices []byte, index int, path []byte) {
+		if len(path) == len(str) {
+			ret = append(ret, string(path))
+			return
+		}
+
+		choosed := make(map[byte]struct{})
+		for i := 0; i < len(slices); i++ {
+			if _, exists := choosed[slices[i]]; exists {
+				continue
+			}
+
+			path = append(path, slices[i])
+			choosed[slices[i]] = struct{}{}
+
+			tmp := make([]byte, len(slices))
+			copy(tmp, slices)
+			tf(append(tmp[0:i], tmp[i+1:]...), i, path)
+
+			// back
+			path = path[0 : len(path)-1]
+		}
+	}
+
+	tf([]byte(str), -1, nil)
+
+	return ret
+}
+
+func Permutation2(str string) []string {
+	if str == "" {
+		return nil
+	}
+	ret := make([]string, 0)
+	var tf func(selected map[int]struct{}, path *[]byte)
+	tf = func(selected map[int]struct{}, path *[]byte) {
+		if len(*path) == len(str) {
+			ret = append(ret, string(*path))
+			return
+		}
+
+		choosed := make(map[byte]struct{})
+		for i := 0; i < len(str); i++ {
+			if _, exists := selected[i]; exists {
+				continue
+			}
+			if _, exists := choosed[str[i]]; exists {
+				continue
+			}
+
+			*path = append(*path, str[i])
+			selected[i] = struct{}{}
+			choosed[str[i]] = struct{}{}
+			tf(selected, path)
+			// back
+			delete(selected, i)
+			*path = (*path)[0 : len(*path)-1]
+		}
+	}
+
+	tf(make(map[int]struct{}), &[]byte{})
+	return ret
 }

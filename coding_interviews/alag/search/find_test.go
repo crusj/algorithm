@@ -117,7 +117,7 @@ func TestFind3(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Find3(tt.args.target, tt.args.array); got != tt.want {
+			if got := Find(tt.args.target, tt.args.array); got != tt.want {
 				t.Errorf("Find3() = %v, want %v", got, tt.want)
 			}
 		})

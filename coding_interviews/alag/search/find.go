@@ -28,14 +28,6 @@ func Find(target int, array [][]int) bool {
 				return tf(array, x+1, y+1)
 			}
 
-			if array[y][width-1] < target {
-				return tf(array, x, y+1)
-			}
-
-			if array[depth-1][x] < target {
-				return tf(array, x+1, y)
-			}
-
 			return tf(array, x+1, y) || tf(array, x, y+1)
 		}
 

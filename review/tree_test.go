@@ -773,3 +773,121 @@ func Test_findNthDigit(t *testing.T) {
 		})
 	}
 }
+
+func TestFindPath2(t *testing.T) {
+	type args struct {
+		root *TreeNode
+		sum  int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FindPath2(tt.args.root, tt.args.sum); got != tt.want {
+				t.Errorf("FindPath2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFind(t *testing.T) {
+	type args struct {
+		target int
+		array  [][]int
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "test0",
+			args: args{
+				target: 7,
+				array:  nil,
+			},
+			want: false,
+		},
+		{
+			name: "test1",
+			args: args{
+				target: 7,
+				array: [][]int{
+					{1, 2, 3, 4},
+					{5, 6, 7, 8},
+					{9, 10, 11, 12},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			args: args{
+				target: -1,
+				array: [][]int{
+					{1, 2, 3, 4},
+					{5, 6, 7, 8},
+					{9, 10, 11, 12},
+				},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Find(tt.args.target, tt.args.array); got != tt.want {
+				t.Errorf("Find() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPermutation(t *testing.T) {
+	type args struct {
+		str string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "test0",
+			args: args{
+				str: "",
+			},
+			want: nil,
+		},
+		{
+			name: "test1",
+			args: args{
+				str: "a",
+			},
+			want: []string{"a"},
+		},
+		{
+			name: "test2",
+			args: args{"abc"},
+			want: []string{"abc", "acb", "bac", "bca", "cab", "cba"},
+		},
+		{
+			name: "test3",
+			args: args{
+				str: "aab",
+			},
+			want: []string{"aab", "aba", "baa"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Permutation2(tt.args.str); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Permutation() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
