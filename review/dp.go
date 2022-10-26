@@ -16,3 +16,6 @@ func FindGreatestSumOfSubArray(array []int) int {
 
 	return ret
 }
+
+func FindGreatestSumOfSubArray2(array []int) int {
+}
