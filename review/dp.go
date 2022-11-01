@@ -172,3 +172,27 @@ func maxValue(grid [][]int) int {
 
 	return dp(len(grid)-1, len(grid[0])-1)
 }
+
+// 最长上升子序列
+// 动态规划
+func lis(array []int) int {
+	dp := make([]int, len(array))
+	for i := 0; i < len(dp); i++ {
+		dp[i] = 1
+	}
+
+	for i := 0; i < len(array); i++ {
+		for j := 0; j < i; j++ {
+			if array[j] < array[i] {
+				dp[i] = max(dp[i], dp[j]+1)
+			}
+		}
+	}
+
+	res := 0
+	for i := 0; i < len(dp); i++ {
+		res = max(res, dp[i])
+	}
+
+	return res
+}

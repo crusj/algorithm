@@ -161,3 +161,36 @@ func Test_maxValue(t *testing.T) {
 		})
 	}
 }
+
+func Test_lis(t *testing.T) {
+	type args struct {
+		array []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "test1",
+			args: args{
+				array: []int{1, 2, 3, 4, 5},
+			},
+			want: 5,
+		},
+		{
+			name: "test2",
+			args: args{
+				array: []int{2, 1, 4, 3, 5, 7, 6},
+			},
+			want: 4,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := lis(tt.args.array); got != tt.want {
+				t.Errorf("lis() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
