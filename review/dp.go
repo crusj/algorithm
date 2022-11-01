@@ -196,3 +196,23 @@ func lis(array []int) int {
 
 	return res
 }
+
+// 最长不重复字符的字符串
+func lengthOfLongestSubstring(s string) int {
+	// write code here
+	return 0
+}
+
+// 最大子序和
+// dp 数学归纳法
+// dp[i] 是dp[i-1] + nums[i] 或者dp[i]
+func maxSubArray(nums []int) int {
+	dp := make([]int, len(nums))
+	dp[0] = nums[0]
+
+	for i := 1; i < len(nums); i++ {
+		dp[i] = max(nums[i], dp[i-1]+nums[i])
+	}
+
+	return max(dp...)
+}
