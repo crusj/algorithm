@@ -61,4 +61,6 @@ var (
 )
 
 func Push(node int) {
+	for {
+	}
 }
