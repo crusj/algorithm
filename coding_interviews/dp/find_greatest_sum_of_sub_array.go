@@ -73,6 +73,9 @@ func FindGreatestSumOfSubArrayDP(array []int) int {
 // dp[i] 代表数组前i个数连续子数组的最大和，必须包含i
 // base dp[0] = array[0] i == 0
 // dp[i] = max(array[i], dp[i-1] + array[i])
+
+// dp[0] 包含了array[0]
+// dp[1] 如果dp[0]小于0，返回array[1]，包含了array[1]，如果dp[0] > 0，返回dp[0] + array[1]
 func FindGreatestSumOfSubArrayDPReview(array []int) int {
 	dp := make([]int, len(array))
 	// base
@@ -95,4 +98,33 @@ func FindGreatestSumOfSubArrayDPReview(array []int) int {
 	}
 
 	return max
+}
+
+// 连续子数组和，存在多个最大和返回长度最大
+func FindGreatestSumOfSubArrayMaxLen(array []int) []int {
+	dp := make([]int, len(array))
+	// base
+	dp[0] = array[0]
+	max, index := dp[0], 0
+	path := make(map[int][]int, 0)
+	path[0] = []int{dp[0]}
+
+	for i := 1; i < len(array); i++ {
+		if dp[i-1] < 0 {
+			dp[i] = array[i]
+			path[i] = []int{array[i]}
+		} else {
+			dp[i] = dp[i-1] + array[i]
+			path[i] = append(path[i-1], array[i])
+		}
+
+		if max < dp[i] {
+			max = dp[i]
+			index = i
+		} else if max == dp[i] && len(path[index]) < len(path[i]) {
+			index = i
+		}
+	}
+
+	return path[index]
 }
