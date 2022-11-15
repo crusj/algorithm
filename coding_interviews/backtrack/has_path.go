@@ -4,7 +4,6 @@ func hasPath(matrix [][]byte, word string) bool {
 	if len(matrix) == 0 {
 		return false
 	}
-	// write code here
 
 	var fn func(x, y int, used [][]int, path []byte) bool
 	fn = func(x, y int, used [][]int, path []byte) bool {
