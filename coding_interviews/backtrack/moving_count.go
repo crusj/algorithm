@@ -21,13 +21,12 @@ func movingCount(threshold int, rows int, cols int) int {
 	}
 	enable[0][0] = 1
 
-	var fn func(y, x int, used [][]int)
-
 	passed := make([][]int, rows)
 	for i := range enable {
 		passed[i] = make([]int, cols)
 	}
 
+	var fn func(y, x int, used [][]int)
 	fn = func(y, x int, used [][]int) {
 		if passed[y][x] == 1 {
 			return
@@ -71,8 +70,9 @@ func movingCount(threshold int, rows int, cols int) int {
 	for i := range used {
 		used[i] = make([]int, cols)
 	}
-
 	used[0][0] = 1
+
+	// call
 	fn(0, 0, used)
 
 	enableCount := 0
