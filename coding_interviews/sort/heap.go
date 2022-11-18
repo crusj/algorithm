@@ -2,17 +2,43 @@ package sort
 
 // max heap
 func maxHeap(arr []int) []int {
-	maxHeap := make([]int, len(arr)+1)
-	for i := 1; i <= len(arr); i++ { // nlogn
-		maxHeap[i] = arr[i-1]
-		j := i
-		for j != 1 && maxHeap[j/2] < maxHeap[j] { // logn
-			maxHeap[j] = maxHeap[j/2]
-			j /= 2
+	var heapify func(pivot int)
+	heapify = func(pivot int) {
+		max := pivot
+		l := pivot*2 + 1
+		r := pivot*2 + 2
+
+		if l < len(arr) && arr[l] > arr[max] {
+			max = l
 		}
 
-		maxHeap[j] = arr[i-1]
+		if r < len(arr) && arr[r] > arr[max] {
+			max = r
+		}
+
+		if max != pivot {
+			arr[max], arr[pivot] = arr[pivot], arr[max]
+			heapify(max)
+		}
 	}
 
-	return maxHeap[1:]
+	pivot := len(arr) / 2
+	for pivot >= 0 {
+		heapify(pivot)
+		pivot--
+	}
+
+	return arr
+}
+
+// 堆排序
+func heapSort(arr []int) []int {
+	l := len(arr)
+	for l > 0 {
+		maxHeap(arr[0:l])
+		arr[l-1], arr[0] = arr[0], arr[l-1]
+		l--
+	}
+
+	return arr
 }
