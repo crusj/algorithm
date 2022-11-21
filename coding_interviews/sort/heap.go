@@ -1,6 +1,6 @@
 package sort
 
-// max heap
+// 创建最大堆
 func maxHeap(arr []int) []int {
 	var heapify func(pivot int)
 	heapify = func(pivot int) {
