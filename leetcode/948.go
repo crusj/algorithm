@@ -11,8 +11,38 @@ import "sort"
 3. 令牌 1 正面朝上，能量变为 300 ，分数变为 1
 4. 令牌 2 正面朝上，能量变为 0 ，分数变为 2
 */
-// 感觉像dp
+
 func bagOfTokensScore(tokens []int, power int) int {
+	sort.Ints(tokens)
+	max, p := 0, 0
+	i, j := 0, len(tokens)-1
+	for {
+		if i > j {
+			return max
+		}
+
+		for i <= j && power >= tokens[i] {
+			power -= tokens[i]
+			p++
+			i++
+		}
+		if max < p {
+			max = p
+		}
+
+		if i < j && p > 0 {
+			power += tokens[j]
+			p--
+			j--
+			continue
+		}
+
+		return max
+	}
+}
+
+// 感觉像dp
+func bagOfTokensScore2(tokens []int, power int) int {
 	sort.Ints(tokens)
 	return fn(tokens, power, 0, len(tokens)-1)
 }
