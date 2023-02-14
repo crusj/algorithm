@@ -18,7 +18,7 @@ func Test_removeSubfolders(t *testing.T) {
 			name: "test2",
 			args: args{
 				folder: []string{
-					"/ad", "/ad/af", "/aa",
+					"/ad", "/ab/af", "/ad/af", "/aa",
 				},
 			},
 			want: []string{"/ad", "/aa"},
