@@ -19,12 +19,44 @@ package leetcode
 
 // 暴力窗口穷举，可以
 // 滑动窗口，不行
-
 // 贪心连续劳累最多的，不行
 // 动态规划，也不行
 // 回溯，也不行
+// 前缀和
 func longestWPI(hours []int) int {
 	ans := 0
+	// fmt.Println(hours)
+	preSum := make([]int, len(hours)+1)
+	preSum[0] = 0
+	for i := 1; i < len(preSum); i++ {
+		if hours[i-1] > 8 {
+			hours[i-1] = 1
+		} else {
+			hours[i-1] = -1
+		}
+		preSum[i] = preSum[i-1] + hours[i-1]
+	}
+
+	j := len(preSum) - 1
+	// fmt.Println(" ", hours)
+	// fmt.Println(preSum)
+	for j > 0 {
+		if preSum[j] > 0 {
+			ans = max(ans, j)
+			j--
+			continue
+		}
+
+		for i := 0; i < j; i++ {
+			if preSum[i] < preSum[j] {
+				ans = max(ans, j-i)
+				break
+			}
+		}
+
+		j--
+	}
+
 	return ans
 }
 
@@ -45,6 +77,7 @@ func getSumPrefix(arr []int, i, j int) (ans int) {
 // [1,2,3]      3
 // [0,1,3,6]
 // [1:1,3:1,6:1]
+// 连续指数组和的个数
 func subarraySum(nums []int, k int) (ans int) {
 	preSum := map[int]int{}
 	sumi := 0

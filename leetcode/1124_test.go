@@ -69,3 +69,40 @@ func Test_subarraySum(t *testing.T) {
 		})
 	}
 }
+
+func Test_longestWPI(t *testing.T) {
+	type args struct {
+		hours []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "test1",
+			args: args{
+				hours: []int{
+					9, 9, 6, 0, 1, 0,
+				},
+			},
+			want: 3,
+		},
+		{
+			name: "test2",
+			args: args{
+				hours: []int{
+					9, 1, 3, 9, 7, 9, 3, 0,
+				},
+			},
+			want: 3,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := longestWPI(tt.args.hours); got != tt.want {
+				t.Errorf("longestWPI() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
